@@ -128,19 +128,19 @@ The demonstration database uses plaintext sample passwords, so this project must
 
 ## 9. Team Responsibilities
 
-**Member 1 — Application Development**
+**Member 1 - Application Development**
 
 * Explain the PHP/MySQL application.
 * Demonstrate the vulnerable and secured login systems.
 * Explain parameterized queries.
 
-**Member 2 — Testing**
+**Member 2 - Testing**
 
 * Run the Python test suite.
 * Explain the 14 checks.
 * Review the HTML and JSON reports.
 
-**Member 3 — Documentation and Presentation**
+**Member 3 - Documentation and Presentation**
 
 * Prepare project documentation and slides.
 * Explain the architecture and test results.
