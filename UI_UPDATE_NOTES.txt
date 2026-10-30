@@ -1,0 +1,7 @@
+UI update notes
+- web/vulnerable_frontend.html now uses red warning styling and posts to vulnerable_login.php.
+- web/sql_frontend.html now uses green protection styling and posts to login.php.
+- The PHP endpoints, test runner, Docker configuration, and database schema were preserved.
+- After copying the package to your computer, run docker compose up --build -d and python test_runner.py.
+- Verify the six expected results on your own machine and capture screenshots from your actual run.
+- Replace the team placeholders in the report and PPT before submission.

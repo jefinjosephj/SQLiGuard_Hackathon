@@ -1,0 +1,180 @@
+{
+  "project": "SQLiGuard - SQL Injection Detection and Prevention Framework",
+  "generated_at_utc": "2026-10-29T05:55:04+00:00",
+  "target_base_url": "http://127.0.0.1:8080",
+  "scope": "Local, intentionally vulnerable training application only",
+  "tests_passed": 14,
+  "tests_total": 14,
+  "tests_failed": 0,
+  "category_counts": {
+    "Authentication regression": 4,
+    "SQL injection behavior": 2,
+    "Input validation / regression": 2,
+    "Special-character handling": 2,
+    "Secure coding control / static source check": 4
+  },
+  "vulnerability_reproduced_on_baseline": true,
+  "mitigation_verified_on_parameterized_endpoint": true,
+  "results": [
+    {
+      "name": "Vulnerable endpoint: valid sample account",
+      "endpoint": "vulnerable_login.php",
+      "endpoint_type": "Vulnerable baseline",
+      "input_category": "Authentication regression",
+      "purpose": "Confirm normal login works on the baseline.",
+      "expected_outcome": "Login successful",
+      "actual_outcome": "Login successful",
+      "http_status": 200,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Vulnerable endpoint: invalid credentials",
+      "endpoint": "vulnerable_login.php",
+      "endpoint_type": "Vulnerable baseline",
+      "input_category": "Authentication regression",
+      "purpose": "Confirm ordinary invalid credentials are rejected.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 200,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Vulnerable endpoint: SQL injection probe",
+      "endpoint": "vulnerable_login.php",
+      "endpoint_type": "Vulnerable baseline",
+      "input_category": "SQL injection behavior",
+      "purpose": "Reproduce the known weakness in the intentionally vulnerable local endpoint.",
+      "expected_outcome": "Login successful",
+      "actual_outcome": "Login successful",
+      "http_status": 200,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: valid sample account",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Authentication regression",
+      "purpose": "Confirm the secured implementation preserves legitimate login.",
+      "expected_outcome": "Login successful",
+      "actual_outcome": "Login successful",
+      "http_status": 200,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: invalid credentials",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Authentication regression",
+      "purpose": "Confirm the secured implementation rejects invalid credentials.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: same SQL injection probe",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "SQL injection behavior",
+      "purpose": "Verify the same input does not bypass authentication.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: empty credentials",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Input validation / regression",
+      "purpose": "Confirm empty fields do not authenticate.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: quote-only username",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Special-character handling",
+      "purpose": "Confirm a quote character is treated as ordinary input.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: SQL metacharacters in username",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Special-character handling",
+      "purpose": "Confirm SQL-like text does not alter the secured query structure.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Secured endpoint: whitespace-only credentials",
+      "endpoint": "login.php",
+      "endpoint_type": "Parameterized-query implementation",
+      "input_category": "Input validation / regression",
+      "purpose": "Confirm whitespace-only values do not authenticate.",
+      "expected_outcome": "Login failed",
+      "actual_outcome": "Login failed",
+      "http_status": 401,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Source review: SQL uses placeholders and bound parameters",
+      "endpoint": "web/login.php",
+      "endpoint_type": "Static source review",
+      "input_category": "Secure coding control / static source check",
+      "purpose": "Check that the secured PHP query uses placeholders and bind_param rather than interpolating user input.",
+      "expected_outcome": "Control pattern present",
+      "actual_outcome": "Control pattern present",
+      "http_status": null,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Source review: HTML output is escaped",
+      "endpoint": "web/login.php",
+      "endpoint_type": "Static source review",
+      "input_category": "Secure coding control / static source check",
+      "purpose": "Check that the displayed username is passed through htmlspecialchars with quote handling and UTF-8.",
+      "expected_outcome": "Control pattern present",
+      "actual_outcome": "Control pattern present",
+      "http_status": null,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Source review: database errors are not returned to users",
+      "endpoint": "web/login.php",
+      "endpoint_type": "Static source review",
+      "input_category": "Secure coding control / static source check",
+      "purpose": "Check that database errors are logged server-side and the response uses a generic service message.",
+      "expected_outcome": "Control pattern present",
+      "actual_outcome": "Control pattern present",
+      "http_status": null,
+      "test_status": "PASS"
+    },
+    {
+      "name": "Source review: authentication failure message is generic",
+      "endpoint": "web/login.php",
+      "endpoint_type": "Static source review",
+      "input_category": "Secure coding control / static source check",
+      "purpose": "Check that failed logins use a generic message rather than identifying which credential was incorrect.",
+      "expected_outcome": "Control pattern present",
+      "actual_outcome": "Control pattern present",
+      "http_status": null,
+      "test_status": "PASS"
+    }
+  ],
+  "limitations": [
+    "This is a small proof of concept for a single local login workflow, not a general-purpose SQL injection scanner.",
+    "The suite combines HTTP behavior tests with simple source-pattern checks; source checks are not a complete code audit and can produce false positives or false negatives.",
+    "Response-message checks can miss vulnerabilities that do not change the visible login result.",
+    "The supplied training database uses demonstration credentials and plaintext sample passwords; do not deploy it publicly or use real accounts."
+  ]
+}

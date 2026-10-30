@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SQLiGuard | Home</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #080e1d;
+            --panel: #111b30;
+            --border: #293752;
+            --text: #e8eefb;
+            --muted: #a8b8d5;
+            --green: #36d6a0;
+            --red: #ff6b7a;
+            --blue: #8ab4ff
+        }
+ 
+        * { box-sizing: border-box }
+ 
+        html { scroll-behavior: smooth }
+ 
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: radial-gradient(ellipse at 15% 15%, rgba(30, 190, 150, .13), transparent 36%), radial-gradient(ellipse at 90% 10%, rgba(100, 90, 220, .13), transparent 34%), var(--bg)
+        }
+ 
+        .wrap { width: min(1120px, calc(100% - 36px)); margin: auto; padding: 42px 0 32px }
+ 
+        header { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 54px }
+ 
+        .brand { font-weight: 800; letter-spacing: .08em }
+ 
+        nav { display: flex; gap: 6px; flex-wrap: wrap }
+        nav a {
+            color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600;
+            padding: 8px 12px; border-radius: 999px; border: 1px solid transparent; transition: .15s
+        }
+        nav a:hover { color: var(--text); border-color: var(--border); background: rgba(255,255,255,.03) }
+ 
+        .hero { max-width: 780px; margin-bottom: 34px }
+ 
+        h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.03; letter-spacing: -.045em; margin: 14px 0 18px }
+ 
+        .hero p { color: var(--muted); font-size: 17px; line-height: 1.7; max-width: 720px; margin: 0 }
+ 
+        /* ---------- cards ---------- */
+        .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 34px }
+ 
+        .card {
+            background: rgba(17, 27, 48, .92); border: 1px solid var(--border); border-radius: 20px;
+            padding: 25px; min-height: 290px; display: flex; flex-direction: column;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, .16); transition: transform .2s ease, box-shadow .2s ease
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 24px 56px rgba(0, 0, 0, .28) }
+        .card.red { border-color: #743849 }
+        .card.green { border-color: #226d5c }
+        .card.blue { border-color: #344c7c }
+ 
+        .badge {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800;
+            letter-spacing: .04em; padding: 7px 10px; border-radius: 999px; width: fit-content
+        }
+        .red .badge { background: #421c2a; color: #ff9aa5 }
+        .green .badge { background: #123d35; color: #7df0ca }
+        .blue .badge { background: #1b2e50; color: #a8c8ff }
+ 
+        h2 { margin: 20px 0 10px; font-size: 24px }
+        .card p { color: var(--muted); font-size: 14px; line-height: 1.65; margin: 0 0 18px }
+        .card ul { color: #c8d5e9; padding-left: 18px; margin: 0 0 22px; font-size: 13px; line-height: 1.8 }
+ 
+        .btn {
+            margin-top: auto; display: block; text-align: center; text-decoration: none; padding: 13px 15px;
+            border-radius: 10px; font-size: 14px; font-weight: 800; transition: transform .15s ease, filter .15s ease
+        }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.08) }
+        .red .btn { color: #fff; background: #d94760 }
+        .green .btn { color: #04261d; background: #37d4a0 }
+        .blue .btn { color: #07172e; background: #91baff }
+ 
+        /* ---------- interactive demo ---------- */
+        section.block { margin-top: 64px; scroll-margin-top: 20px }
+        .block h3 { font-size: 28px; letter-spacing: -.02em; margin: 0 0 8px }
+        .block .sub { color: var(--muted); font-size: 15px; line-height: 1.65; margin: 0 0 22px; max-width: 760px }
+ 
+        .demo { background: rgba(17, 27, 48, .92); border: 1px solid var(--border); border-radius: 20px; padding: 24px }
+ 
+        .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+        label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .04em; margin-bottom: 6px }
+        input[type=text] {
+            width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+            background: #0a1326; color: var(--text); font: 14px ui-monospace, Menlo, Consolas, monospace
+        }
+        input[type=text]:focus { outline: 2px solid #3a6fd8; outline-offset: 1px }
+ 
+        .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 4px; align-items: center }
+        .presets span { font-size: 12px; color: var(--muted); font-weight: 700; margin-right: 4px }
+        .chip {
+            cursor: pointer; font: 600 12px inherit; font-family: inherit; color: var(--text);
+            background: #162440; border: 1px solid var(--border); padding: 8px 12px; border-radius: 999px; transition: .15s
+        }
+        .chip:hover { border-color: #4f6aa0; background: #1b2c50 }
+        .chip.active { border-color: var(--blue); background: #1d3260 }
+ 
+        .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px }
+        .pane { border-radius: 14px; border: 1px solid var(--border); padding: 16px; background: #0a1326; min-width: 0 }
+        .pane.v { border-color: #743849 }
+        .pane.s { border-color: #226d5c }
+        .pane h4 { margin: 0 0 10px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase }
+        .pane.v h4 { color: #ff9aa5 }
+        .pane.s h4 { color: #7df0ca }
+ 
+        pre.sql {
+            margin: 0 0 12px; padding: 12px; border-radius: 10px; background: #060b17; color: #c8d5e9;
+            font: 13px/1.7 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; word-break: break-word; min-height: 84px
+        }
+        .inj { background: rgba(255, 107, 122, .22); color: #ffb3bb; border-radius: 4px; padding: 0 2px }
+        .bound { background: rgba(54, 214, 160, .16); color: #8bf3d2; border-radius: 4px; padding: 0 2px }
+ 
+        .verdict { padding: 11px 13px; border-radius: 10px; font-size: 13px; line-height: 1.55; font-weight: 600 }
+        .verdict.bad { background: #421c2a; color: #ffb3bb; border: 1px solid #743849 }
+        .verdict.ok { background: #123d35; color: #8bf3d2; border: 1px solid #226d5c }
+        .verdict.neutral { background: #1b2e50; color: #bcd4ff; border: 1px solid #344c7c }
+ 
+        .explain { margin-top: 16px; font-size: 13.5px; line-height: 1.7; color: #c8d5e9; padding: 14px 16px; border-radius: 12px; background: #0e1830; border: 1px solid var(--border) }
+        .fine { margin-top: 12px; font-size: 12px; color: #8496b5; line-height: 1.6 }
+ 
+        /* ---------- checklist ---------- */
+        .steps { display: grid; gap: 10px; counter-reset: s; margin-top: 8px }
+        .step {
+            display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 14px; background: rgba(17, 27, 48, .7); cursor: pointer; transition: .15s; user-select: none
+        }
+        .step:hover { border-color: #4f6aa0 }
+        .step input { margin-top: 3px; accent-color: #37d4a0; width: 16px; height: 16px; flex: none }
+        .step b { display: block; font-size: 14px; margin-bottom: 2px }
+        .step small { color: var(--muted); font-size: 13px; line-height: 1.55 }
+        .step.done { opacity: .6 }
+        .step.done b { text-decoration: line-through }
+        .progress { height: 6px; background: #17233d; border-radius: 99px; overflow: hidden; margin: 14px 0 6px }
+        .progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #37d4a0, #8ab4ff); transition: width .3s }
+        .ptext { font-size: 12px; color: var(--muted) }
+ 
+        footer {
+            margin-top: 56px; padding-top: 18px; border-top: 1px solid #24304a; color: #8496b5;
+            font-size: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap
+        }
+ 
+        @media(max-width:850px) {
+            .cards, .compare, .inputs { grid-template-columns: 1fr }
+            .card { min-height: auto }
+            header { margin-bottom: 38px }
+        }
+    </style>
+</head>
+ 
+<body>
+    <main class="wrap">
+        <header>
+            <div class="brand">SQLIGUARD</div>
+            <nav>
+                <a href="#labs">Labs</a>
+                <a href="#playground">Query playground</a>
+            </nav>
+        </header>
+ 
+        <section class="hero">
+            <h1>Test the weakness.<br>Verify the protection.</h1>
+            <p>Compare an intentionally vulnerable PHP/MySQL login with a secured parameterized-query implementation,
+                then review the automated test evidence.</p>
+        </section>
+ 
+        <section class="cards" id="labs" aria-label="Project destinations">
+            <article class="card red">
+                <div class="badge">VULNERABLE BASELINE</div>
+                <h2>Vulnerable Login Lab</h2>
+                <p>Use this intentionally insecure baseline only in the local, authorized lab to demonstrate the SQL
+                    injection weakness.</p>
+                <ul>
+                    <li>Direct SQL string construction</li>
+                    <li>Baseline behavior for comparison</li>
+                </ul><a class="btn" href="/vulnerable_frontend.html">Launch Vulnerable Lab →</a>
+            </article>
+            <article class="card green">
+                <div class="badge">SECURED IMPLEMENTATION</div>
+                <h2>Secured Login Lab</h2>
+                <p>Compare the same test input against the parameterized-query implementation and observe the expected
+                    rejection.</p>
+                <ul>
+                    <li>Parameterized SQL query</li>
+                    <li>Generic failure response and escaped output</li>
+                </ul><a class="btn" href="/sql_frontend.html">Launch Secured Lab →</a>
+            </article>
+            <article class="card blue">
+                <div class="badge">AUTOMATED EVIDENCE</div>
+                <h2>Test Results</h2>
+                <p>Open the HTML report generated by the Python test runner to review individual checks, pass/fail
+                    status, and summary metrics.</p>
+                <ul>
+                    <li>JSON results are saved separately</li>
+                    <li>Re-run tests to refresh evidence</li>
+                </ul><a class="btn" href="/evidence/test_report.html">View HTML Test Report →</a>
+            </article>
+        </section>
+ 
+        <!-- ================= Query playground ================= -->
+        <section class="block" id="playground">
+            <h3>Query playground</h3>
+            <p class="sub">Type a username and password, or pick a preset. See how the same input becomes SQL in each
+                implementation, and why one of them can be tricked while the other cannot.</p>
+ 
+            <div class="demo">
+                <div class="inputs">
+                    <div>
+                        <label for="u">USERNAME</label>
+                        <input type="text" id="u" autocomplete="off" spellcheck="false" value="admin">
+                    </div>
+                    <div>
+                        <label for="p">PASSWORD</label>
+                        <input type="text" id="p" autocomplete="off" spellcheck="false" value="admin123">
+                    </div>
+                </div>
+ 
+                <div class="presets" id="presets">
+                    <span>Try:</span>
+                    <button class="chip" data-u="admin" data-p="admin123">Valid login</button>
+                    <button class="chip" data-u="admin" data-p="wrongpass">Wrong password</button>
+                    <button class="chip" data-u="admin" data-p="' OR '1'='1">Always-true condition</button>
+                    <button class="chip" data-u="admin'-- " data-p="anything">Comment out password check</button>
+                    <button class="chip" data-u="admin'" data-p="x">Stray quote</button>
+                </div>
+ 
+                <div class="compare">
+                    <div class="pane v">
+                        <h4>Vulnerable · string concatenation</h4>
+                        <pre class="sql" id="vsql"></pre>
+                        <div class="verdict" id="vverdict"></div>
+                    </div>
+                    <div class="pane s">
+                        <h4>Secured · parameterized query</h4>
+                        <pre class="sql" id="ssql"></pre>
+                        <div class="verdict" id="sverdict"></div>
+                    </div>
+                </div>
+ 
+            </div>
+        </section>
+ 
+       
+    <script>
+        (function () {
+            var DEMO_USER = 'admin', DEMO_PASS = 'admin123';
+            var $ = function (id) { return document.getElementById(id) };
+            var uEl = $('u'), pEl = $('p');
+ 
+            function esc(s) {
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+ 
+            // Does the injected text make the WHERE clause always true or cut off the password check?
+            function analyze(u, p) {
+                var hasQuote = /'/.test(u + p);
+                if (!hasQuote) {
+                    return (u === DEMO_USER && p === DEMO_PASS)
+                        ? { kind: 'match', msg: 'Credentials matched the demo account. Normal login.' }
+                        : { kind: 'nomatch', msg: 'No matching row. Login failed.' };
+                }
+                var taut = /\bor\b\s*(['"]?)([\w]+)\1\s*=\s*\1\2\1/i.test(u + ' ' + p) || /\bor\b\s+1\s*=\s*1/i.test(u + ' ' + p);
+                if (taut) {
+                    return { kind: 'bypass', msg: 'The injected OR condition is always true, so the WHERE clause matches rows without valid credentials.' };
+                }
+                var cm = u.search(/(--|#|\/\*)/);
+                if (cm > -1 && u.charAt(u.search(/'/)) === "'") {
+                    var before = u.slice(0, u.indexOf("'"));
+                    if (before === DEMO_USER) {
+                        return { kind: 'bypass', msg: 'The comment marker removes the password check, so only the username is compared.' };
+                    }
+                    return { kind: 'nomatch', msg: 'Password check was commented out, but no such user exists. No rows returned.' };
+                }
+                var quotes = (u + p).split("'").length - 1;
+                if (quotes % 2 === 1) {
+                    return { kind: 'error', msg: 'Unbalanced quote breaks the SQL. MySQL would raise a syntax error, and a verbose page could leak details.' };
+                }
+                return { kind: 'nomatch', msg: 'No matching row. Login failed.' };
+            }
+ 
+            function highlight(raw) {
+                // wrap the user-controlled part so it is visible inside the query
+                return '<span class="inj">' + esc(raw) + '</span>';
+            }
+ 
+            function render() {
+                var u = uEl.value, p = pEl.value;
+ 
+                $('vsql').innerHTML =
+                    "SELECT * FROM users\nWHERE username = '" + highlight(u) +
+                    "'\n  AND password = '" + highlight(p) + "';";
+ 
+                $('ssql').innerHTML =
+                    "SELECT * FROM users\nWHERE username = <span class=\"bound\">?</span>\n  AND password = <span class=\"bound\">?</span>;\n\n" +
+                    "-- bound as data:\n1 → <span class=\"bound\">" + esc(JSON.stringify(u)) + "</span>\n2 → <span class=\"bound\">" + esc(JSON.stringify(p)) + "</span>";
+ 
+                var a = analyze(u, p);
+                var vv = $('vverdict');
+                if (a.kind === 'bypass') {
+                    vv.className = 'verdict bad';
+                    vv.textContent = 'Authentication bypassed. ' + a.msg;
+                } else if (a.kind === 'error') {
+                    vv.className = 'verdict bad';
+                    vv.textContent = 'Query breaks. ' + a.msg;
+                } else if (a.kind === 'match') {
+                    vv.className = 'verdict neutral';
+                    vv.textContent = a.msg;
+                } else {
+                    vv.className = 'verdict neutral';
+                    vv.textContent = a.msg;
+                }
+ 
+                var ok = (u === DEMO_USER && p === DEMO_PASS);
+                var sv = $('sverdict');
+                if (ok) {
+                    sv.className = 'verdict neutral';
+                    sv.textContent = 'Credentials matched the demo account. Normal login.';
+                } else {
+                    sv.className = 'verdict ok';
+                    sv.textContent = 'Rejected. The input is compared as literal text, so quotes and SQL keywords have no effect.';
+                }
+ 
+                var ex = $('explain');
+                if (a.kind === 'bypass') {
+                    ex.innerHTML = '<b>What happened:</b> the typed text left the string literal and changed the logic of the query. ' +
+                        'In the parameterized version the same text is sent separately from the SQL, so the database never parses it as code.';
+                } else if (a.kind === 'error') {
+                    ex.innerHTML = '<b>What happened:</b> a single quote closed the string early, leaving broken SQL. ' +
+                        'The secured query is unaffected because the quote is just a character in the bound value.';
+                } else if (ok) {
+                    ex.innerHTML = '<b>Baseline:</b> with ordinary input both versions behave the same. The difference only shows up when input contains SQL syntax.';
+                } else {
+                    ex.innerHTML = '<b>Baseline:</b> ordinary wrong credentials fail in both versions. Pick one of the presets above to see where they diverge.';
+                }
+ 
+                // sync active chip
+                var chips = document.querySelectorAll('#presets .chip');
+                for (var i = 0; i < chips.length; i++) {
+                    chips[i].classList.toggle('active', chips[i].dataset.u === u && chips[i].dataset.p === p);
+                }
+            }
+ 
+            uEl.addEventListener('input', render);
+            pEl.addEventListener('input', render);
+            document.querySelectorAll('#presets .chip').forEach(function (c) {
+                c.addEventListener('click', function () {
+                    uEl.value = c.dataset.u;
+                    pEl.value = c.dataset.p;
+                    render();
+                });
+            });
+            render();
+ 
+            // checklist progress
+            var boxes = document.querySelectorAll('#steps input');
+            function progress() {
+                var n = 0;
+                boxes.forEach(function (b) {
+                    b.closest('.step').classList.toggle('done', b.checked);
+                    if (b.checked) n++;
+                });
+                $('bar').style.width = (n / boxes.length * 100) + '%';
+                $('ptext').textContent = n + ' of ' + boxes.length + ' steps done';
+            }
+            boxes.forEach(function (b) { b.addEventListener('change', progress) });
+            progress();
+        })();
+    </script>
+</body>
+ 
+</html>
+ 

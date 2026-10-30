@@ -1,0 +1,38 @@
+SQLiGuard runtime fixes and verification notes
+================================================
+
+Changes in this package:
+- Docker Compose waits for MySQL's health check before starting the web service.
+- The HTTP port remains bound to 127.0.0.1 only.
+- The secured PHP login accepts POST only, validates blank/non-string input,
+  sets utf8mb4, uses a prepared statement, logs technical errors server-side,
+  returns generic errors, and escapes user-controlled HTML output.
+- The database seed no longer selects and prints all demo rows during initialization.
+- The README's duplicated test-case line was removed.
+- UI HTML/CSS files were preserved from the uploaded project.
+
+Start:
+  docker compose up --build -d
+  docker compose ps
+
+Check DB:
+  Open http://localhost:8080/db_status.php
+  Expected: "SQLiGuard live database check: OK"
+
+Test:
+  python test_runner.py
+
+Troubleshooting:
+- If port 8080 is already in use, stop the process/container using it before startup.
+- If MySQL is still initializing, wait for `docker compose ps` to show it healthy.
+- The SQL initialization script runs automatically only when the MySQL data volume
+  is first created. The seed statements avoid adding duplicate demo usernames if run
+  again manually. Existing volumes are intentionally preserved by this package.
+- Do not run `docker compose down -v` unless you deliberately want to delete the
+  disposable lab database volume.
+- Live Docker/MySQL integration must be verified on the host running Docker.
+
+Safety:
+- This project intentionally includes a vulnerable endpoint for a local lab.
+  Keep it bound to loopback and never expose it to a LAN or the public internet.
+- The demonstration accounts use plaintext sample passwords; do not use real data.

@@ -1,0 +1,16 @@
+SQLiGuard Enhanced Testing Update
+
+What changed:
+- Expanded automated HTTP behavior tests from 6 to 10 local-lab cases.
+- Added secured-endpoint checks for empty credentials, quote-only username, SQL-like metacharacters, and whitespace-only credentials.
+- Added four lightweight source-level checks for parameterized SQL/bound parameters, HTML output escaping, generic database errors with server-side logging, and generic authentication failure messages.
+- The runner now reports 14 checks total: 10 HTTP behavior tests + 4 source-pattern checks.
+- Improved terminal summary and HTML/JSON evidence reporting.
+
+Important:
+- The earlier live run reported 6/6 passing for the original six HTTP tests.
+- The enhanced 14-check suite has NOT been run against your live Docker environment from this packaging environment.
+- Source-level checks are simple pattern checks, not a complete security audit, and can have false positives/negatives.
+- After extracting this package, start Docker and run `python test_runner.py`. Only report the results shown by that real run.
+- If any check fails, inspect the actual output; do not simply mark it as passing.
+- Tests are limited to the local intentionally vulnerable lab. Do not use this tool against public or third-party systems.
