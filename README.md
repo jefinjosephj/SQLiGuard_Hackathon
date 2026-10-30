@@ -146,7 +146,6 @@ The demonstration database uses plaintext sample passwords, so this project must
 * Explain the architecture and test results.
 * Present limitations and future improvements.
 
-All team members should understand the overall workflow and the security controls demonstrated.
 
 ## 10. Conclusion
 
