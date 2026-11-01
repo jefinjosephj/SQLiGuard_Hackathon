@@ -126,22 +126,19 @@ The demonstration database uses plaintext sample passwords, so this project must
 * Source-level checks do not prove that the application is completely secure.
 * Password hashing and least-privilege database permissions are future improvements.
 
-## 9. Team Responsibilities
+## 9. Team Responsibilities (Main):
 
-**Member 1 - Application Development**
-
+**Jefin Joseph J (1RUA25CSE7003) - Application Development**
 * Explain the PHP/MySQL application.
 * Demonstrate the vulnerable and secured login systems.
 * Explain parameterized queries.
 
-**Member 2 - Testing**
-
+**Adharsh Pritham D (1RUA24CSE0013) - Testing**
 * Run the Python test suite.
 * Explain the 14 checks.
 * Review the HTML and JSON reports.
 
-**Member 3 - Documentation and Presentation**
-
+**Khushi Yoganand (1RUA24CSE0202) - Documentation and Presentation**
 * Prepare project documentation and slides.
 * Explain the architecture and test results.
 * Present limitations and future improvements.
